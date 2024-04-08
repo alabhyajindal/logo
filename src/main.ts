@@ -2,6 +2,14 @@ const svg = document.querySelector('#svg')!
 const input = document.querySelector('input')!
 const button = document.querySelector('button')!
 const form = document.querySelector('form')!
+const errorElement = document.querySelector('#error')!
+
+function showError(message: string) {
+  errorElement.classList.remove('invisible')
+  errorElement.classList.add('visible')
+  errorElement.innerHTML = message
+  throw new Error('Invalid command')
+}
 
 function drawCursor(x: number, y: number) {
   const originPoint = `${x},${y}`
@@ -57,7 +65,7 @@ function execute(cmd: string, deg: number) {
       rotateCursor(deg)
       break
     default:
-      throw new Error('Invalid command')
+      showError('Invalid command')
   }
 }
 
