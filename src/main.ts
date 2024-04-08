@@ -4,7 +4,11 @@ const button = document.querySelector('button')!
 const form = document.querySelector('form')!
 const errorElement = document.querySelector('#error')!
 
-const validCommands = ['rt']
+function isValidCommand(cmd: string) {
+  const validCommands = ['rt']
+  if (validCommands.includes(cmd)) return true
+  return false
+}
 
 function showError(message: string) {
   errorElement.classList.remove('invisible')
@@ -74,7 +78,7 @@ function handleGo(e: SubmitEvent) {
 
   const cmd = input.value.split(' ')[0]
   const arg = Number(input.value.split(' ')[1])
-  if (!validCommands.includes(cmd)) showError(`Invalid command: ${cmd}`)
+  if (!isValidCommand(cmd)) showError(`Invalid command: ${cmd}`)
   if (!arg) showError(`Invalid argument: ${arg}`)
 
   execute(cmd, arg)
