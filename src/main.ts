@@ -10,10 +10,24 @@ function isValidCommand(cmd: string) {
   return false
 }
 
+function validateRotateArgument(arg: string, deg: number) {
+  let message
+  if (isNaN(deg)) message = `Invalid argument: ${arg}.`
+  if (deg < -360) {
+    message = `Invalid argument: Rotation degree should be greater than or equal to -360.`
+  }
+  if (deg > 360) {
+    message =
+      'Invalid argument: Rotation degree should be less than or equal to 360.'
+  }
+  if (message) showError(message)
+}
+
 function showError(message: string) {
   errorElement.classList.remove('invisible')
   errorElement.classList.add('visible')
   errorElement.innerHTML = message
+
   throw new Error(message)
 }
 
@@ -59,15 +73,15 @@ function rotateCursor(deg: number) {
   const rotation = cursor.getAttribute('transform')?.match(/-?\d+/g)
   if (!rotation) return
   const currentDeg = Number(rotation[0])
-  cursor.setAttribute(
-    'transform',
-    `rotate(${currentDeg + deg} ${getCursorMidpoints()})`
-  )
+  const newDeg = (currentDeg + deg) % 360
+  cursor.setAttribute('transform', `rotate(${newDeg} ${getCursorMidpoints()})`)
 }
 
-function execute(cmd: string, deg: number) {
+function execute(cmd: string, arg: string) {
   switch (cmd) {
     case 'rt':
+      const deg = Number(arg)
+      validateRotateArgument(arg, deg)
       rotateCursor(deg)
       break
   }
@@ -77,12 +91,13 @@ function handleGo(e: SubmitEvent) {
   e.preventDefault()
 
   const cmd = input.value.split(' ')[0]
-  const arg = Number(input.value.split(' ')[1])
-  if (!isValidCommand(cmd)) showError(`Invalid command: ${cmd}`)
-  if (!arg) showError(`Invalid argument: ${arg}`)
+  const arg = input.value.split(' ')[1]
+  input.value = ''
+
+  if (!isValidCommand(cmd)) showError(`Invalid command: ${cmd}.`)
+  if (!arg) showError(`Missing argument.`)
 
   execute(cmd, arg)
-  input.value = ''
 }
 
 drawCursor(200, 200)
