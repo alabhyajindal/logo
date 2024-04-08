@@ -51,14 +51,20 @@ function rotateCursor(deg: number) {
   )
 }
 
-function execute(deg: number) {
-  rotateCursor(deg)
+function execute(cmd: string, deg: number) {
+  switch (cmd) {
+    case 'rt':
+      rotateCursor(deg)
+      break
+    default:
+      throw new Error('Invalid command')
+  }
 }
 
 function handleGo(e: SubmitEvent) {
   e.preventDefault()
-  const deg = Number(input.value.split(' ')[1])
-  execute(deg)
+  const [cmd, arg] = input.value.split(' ')
+  execute(cmd, Number(arg))
   input.value = ''
 }
 
