@@ -35,7 +35,7 @@ function drawCursor(x: number, y: number) {
   svg.appendChild(cursor)
 }
 
-function cursorMidpoint() {
+function getCursorMidpoints() {
   const cursor = document.querySelector('#cursor')!
   const d = cursor.getAttribute('d')!.split(' ')
 
@@ -61,7 +61,7 @@ function rotateCursor(deg: number) {
   const currentDeg = Number(rotation[0])
   cursor.setAttribute(
     'transform',
-    `rotate(${currentDeg + deg} ${cursorMidpoint()})`
+    `rotate(${currentDeg + deg} ${getCursorMidpoints()})`
   )
 }
 

@@ -42,7 +42,7 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
     },
 
-    // OS dependencies missing to run Safari on Linux
+    /* OS dependencies missing to run Safari on Linux */
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
