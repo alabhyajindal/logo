@@ -4,11 +4,13 @@ const button = document.querySelector('button')!
 const form = document.querySelector('form')!
 const errorElement = document.querySelector('#error')!
 
+const validCommands = ['rt']
+
 function showError(message: string) {
   errorElement.classList.remove('invisible')
   errorElement.classList.add('visible')
   errorElement.innerHTML = message
-  throw new Error('Invalid command')
+  throw new Error(message)
 }
 
 function drawCursor(x: number, y: number) {
@@ -64,15 +66,18 @@ function execute(cmd: string, deg: number) {
     case 'rt':
       rotateCursor(deg)
       break
-    default:
-      showError('Invalid command')
   }
 }
 
 function handleGo(e: SubmitEvent) {
   e.preventDefault()
-  const [cmd, arg] = input.value.split(' ')
-  execute(cmd, Number(arg))
+
+  const cmd = input.value.split(' ')[0]
+  const arg = Number(input.value.split(' ')[1])
+  if (!validCommands.includes(cmd)) showError(`Invalid command: ${cmd}`)
+  if (!arg) showError(`Invalid argument: ${arg}`)
+
+  execute(cmd, arg)
   input.value = ''
 }
 
