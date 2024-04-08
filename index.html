@@ -6,17 +6,30 @@
     <link rel="stylesheet" href="src/index.css" />
     <title>The Logo Programming Language</title>
   </head>
-  <body class="bg-gray-400">
-    <div class="flex gap-6 max-h-screen max-w-xl mx-auto mt-16 px-4" id="app">
-      <section>
-        <h2>Instructions</h2>
-        <strong>rt &lt;deg&gt;</strong>
-        <p>Rotate by degrees</p>
+  <body class="bg-gray-200">
+    <div
+      class="flex justify-center gap-6 max-h-screen mx-auto mt-16 px-4"
+      id="app"
+    >
+      <section class="w-52">
+        <h1 class="text-lg font-bold uppercase">
+          The Logo Programming Langauge
+        </h1>
+        <div class="mt-4">
+          <p>
+            Logo is a visual programming language. Type commands into the input
+            and experiment. Draw shapes, have fun.
+          </p>
+        </div>
+        <div class="mt-6">
+          <strong>rt &lt;deg&gt;</strong>
+          <p>Rotate by degrees</p>
+        </div>
       </section>
       <main class="flex flex-col max-w-full">
         <svg
           id="svg"
-          class="border border-gray-500 rounded-sm"
+          class="bg-white border border-gray-500 rounded-sm"
           width="400"
           height="400"
           xmlns="http://www.w3.org/2000/svg"
