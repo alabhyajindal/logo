@@ -56,3 +56,51 @@ test('cursor rotates -90 degrees on rt -90 command', async ({ page }) => {
   const cursor = page.locator('#cursor')
   await expect(cursor).toHaveAttribute('transform', 'rotate(-90 200 210)')
 })
+
+test('cursor rotates 0 degrees on rt 360 command', async ({ page }) => {
+  await page.goto('http://localhost:5173/')
+
+  await page.getByRole('textbox').click()
+  await page.getByRole('textbox').fill('rt 360')
+  await page.getByRole('button', { name: 'Go' }).click()
+
+  const cursor = page.locator('#cursor')
+  await expect(cursor).toHaveAttribute('transform', 'rotate(0 200 210)')
+})
+
+test('error is shown on rt 400 command', async ({ page }) => {
+  await page.goto('http://localhost:5173/')
+
+  await page.getByRole('textbox').click()
+  await page.getByRole('textbox').fill('rt 400')
+  await page.getByRole('button', { name: 'Go' }).click()
+
+  const errorElement = page.locator('#error')
+  await expect(errorElement).toHaveClass(/block/)
+})
+
+test('error is shown on rt -400 command', async ({ page }) => {
+  await page.goto('http://localhost:5173/')
+
+  await page.getByRole('textbox').click()
+  await page.getByRole('textbox').fill('rt -400')
+  await page.getByRole('button', { name: 'Go' }).click()
+
+  const errorElement = page.locator('#error')
+  await expect(errorElement).toHaveClass(/block/)
+})
+
+test('error is hidden after a valid command', async ({ page }) => {
+  await page.goto('http://localhost:5173/')
+
+  await page.getByRole('textbox').click()
+  await page.getByRole('textbox').fill('rt -400')
+  await page.getByRole('button', { name: 'Go' }).click()
+
+  const errorElement = page.locator('#error')
+  await expect(errorElement).toHaveClass(/block/)
+
+  await page.getByRole('textbox').fill('rt 90')
+  await page.getByRole('button', { name: 'Go' }).click()
+  await expect(errorElement).toHaveClass(/hidden/)
+})

@@ -21,14 +21,20 @@ function validateRotateArgument(arg: string, deg: number) {
       'Invalid argument: Rotation degree should be less than or equal to 360.'
   }
   if (message) showError(message)
+  else hideError()
 }
 
 function showError(message: string) {
-  errorElement.classList.remove('invisible')
-  errorElement.classList.add('visible')
+  errorElement.classList.remove('hidden')
+  errorElement.classList.add('block')
   errorElement.innerHTML = message
 
   throw new Error(message)
+}
+
+function hideError() {
+  errorElement.classList.remove('block')
+  errorElement.classList.add('hidden')
 }
 
 function drawCursor(x: number, y: number) {
@@ -77,17 +83,7 @@ function rotateCursor(deg: number) {
   cursor.setAttribute('transform', `rotate(${newDeg} ${getCursorMidpoints()})`)
 }
 
-function execute(cmd: string, arg: string) {
-  switch (cmd) {
-    case 'rt':
-      const deg = Number(arg)
-      validateRotateArgument(arg, deg)
-      rotateCursor(deg)
-      break
-  }
-}
-
-function handleGo(e: SubmitEvent) {
+function execute(e: SubmitEvent) {
   e.preventDefault()
 
   const cmd = input.value.split(' ')[0]
@@ -97,10 +93,15 @@ function handleGo(e: SubmitEvent) {
   if (!isValidCommand(cmd)) showError(`Invalid command: ${cmd}.`)
   if (!arg) showError(`Missing argument.`)
 
-  execute(cmd, arg)
+  switch (cmd) {
+    case 'rt':
+      const deg = Number(arg)
+      validateRotateArgument(arg, deg)
+      rotateCursor(deg)
+      break
+  }
 }
 
 drawCursor(200, 200)
-rotateCursor(0)
 
-form.addEventListener('submit', handleGo)
+form.addEventListener('submit', execute)
