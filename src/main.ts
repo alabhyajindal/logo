@@ -74,7 +74,7 @@ function getCursorMidpoints(): { x: number; y: number } {
   return { x, y }
 }
 
-function rotateCursor(deg: number) {
+function rt(deg: number) {
   const cursor = document.querySelector('#cursor')!
   const rotation = cursor.getAttribute('transform')?.match(/-?\d+/g)
   if (!rotation) return
@@ -98,12 +98,12 @@ function execute(e: SubmitEvent) {
     case 'rt':
       const deg = Number(arg)
       validateRotateArgument(arg, deg)
-      rotateCursor(deg)
+      rt(deg)
       break
   }
 }
 
 drawCursor(200, 200)
-rotateCursor(45)
+rt(45)
 
 form.addEventListener('submit', execute)
