@@ -55,7 +55,7 @@ function drawCursor(x: number, y: number) {
   svg.appendChild(cursor)
 }
 
-function getCursorMidpoints() {
+function getCursorMidpoints(): { x: number; y: number } {
   const cursor = document.querySelector('#cursor')!
   const d = cursor.getAttribute('d')!.split(' ')
 
@@ -71,7 +71,7 @@ function getCursorMidpoints() {
 
   const x = leftSum / 2
   const y = rightSum / 2
-  return `${x} ${y}`
+  return { x, y }
 }
 
 function rotateCursor(deg: number) {
@@ -80,7 +80,8 @@ function rotateCursor(deg: number) {
   if (!rotation) return
   const currentDeg = Number(rotation[0])
   const newDeg = (currentDeg + deg) % 360
-  cursor.setAttribute('transform', `rotate(${newDeg} ${getCursorMidpoints()})`)
+  const { x, y } = getCursorMidpoints()
+  cursor.setAttribute('transform', `rotate(${newDeg} ${x} ${y})`)
 }
 
 function execute(e: SubmitEvent) {
@@ -103,5 +104,6 @@ function execute(e: SubmitEvent) {
 }
 
 drawCursor(200, 200)
+rotateCursor(45)
 
 form.addEventListener('submit', execute)
