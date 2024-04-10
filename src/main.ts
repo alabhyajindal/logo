@@ -12,6 +12,7 @@ let drawing = true
 const container = document.querySelector('#container')
 const inputElement = document.querySelector('input')
 const errorElement = document.getElementById('error')
+const form = document.querySelector('form')
 
 init()
 
@@ -223,11 +224,11 @@ function showError(message) {
   errorElement.classList.remove('hidden')
 }
 
-function hideError(message) {
+function hideError() {
   errorElement.classList.add('hidden')
 }
 
-document.querySelector('form').addEventListener('submit', (e) => {
+form.addEventListener('submit', (e) => {
   e.preventDefault()
   analyse()
 })
