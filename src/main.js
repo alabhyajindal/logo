@@ -20,7 +20,7 @@ function init() {
     'g'
   )
   turtleElement.innerHTML = `
-    <path d="M 0 0 l 10 10 l -10 -25 l -10 25 z" fill="red" stroke="#3b4449"></path>
+    <path d="M 0 0 l 10 10 l -10 -25 l -10 25 z" fill="red" stroke="black"></path>
   `
   turtleElement.setAttribute('transform', `translate(${centerX}, ${centerY})`)
   container.appendChild(turtleElement)
@@ -31,8 +31,10 @@ function init() {
 function analyse() {
   // Trim spaces and convert input to lowercase for uniform processing
   let cmd = inputField.value.trim().toLowerCase()
-  // Updates the input field with the processed command
-  inputField.value = cmd
+
+  // Clears the input field and focuses it for the next command
+  document.querySelector('input').value = ''
+  document.querySelector('input').focus()
 
   // Counts how many times 'repeat' appears in the command
   const number_of_repeats = cmd.split('repeat').length - 1
@@ -143,9 +145,6 @@ function command(cmd) {
     // Shows an error if an unrecognized command is entered
     showError(`Invalid command: ${cmd}`)
   }
-  // Clears the input field and focuses it for the next command
-  document.querySelector('input').value = ''
-  document.querySelector('input').focus()
 }
 
 function rt(degrees) {
