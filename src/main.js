@@ -33,19 +33,17 @@ function analyse() {
 
   const number_of_repeats = cmd.split('repeat').length - 1
   if (number_of_repeats > 1) {
-    showError("This version of Logo can only process one 'repeat' per line")
+    showError('Syntax Error: Only one repeat allowed per command')
   } else if (number_of_repeats === 0) {
     breakdown(cmd)
   } else {
     const startofrepeat = cmd.indexOf('repeat')
     const endofnumber = cmd.indexOf('[')
-    const numberpfrepeats = parseInt(
-      cmd.substring(startofrepeat + 6, endofnumber)
-    )
+    const repeatCount = parseInt(cmd.substring(startofrepeat + 6, endofnumber))
 
     let temp = cmd
     cmd = temp.substring(0, startofrepeat)
-    for (let i = 1; i <= numberpfrepeats; i++) {
+    for (let i = 1; i <= repeatCount; i++) {
       cmd += temp.substring(temp.indexOf('[') + 1, temp.indexOf(']')) + ' '
     }
     cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
