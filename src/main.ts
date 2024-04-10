@@ -58,6 +58,7 @@ function analyse() {
     cmd = temp.substring(0, startofrepeat)
     for (let i = 1; i <= repeatCount; i++) {
       cmd += temp.substring(temp.indexOf('[') + 1, temp.indexOf(']')) + ' '
+      console.log('constructing:', cmd)
     }
     // Appends the remaining part of the command after the repeat block
     cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
@@ -98,6 +99,7 @@ function breakdown(cmd) {
       command(cmd.substring(0, secondSpace))
       // Trims the processed command from the input
       cmd = cmd.substring(secondSpace).trim()
+      console.log('removing', cmd)
     }
   }
 }
