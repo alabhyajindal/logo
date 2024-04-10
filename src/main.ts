@@ -58,7 +58,6 @@ function processCommand() {
     cmd = temp.substring(0, startOfRepeat)
     for (let i = 1; i <= repeatCount; i++) {
       cmd += temp.substring(temp.indexOf('[') + 1, temp.indexOf(']')) + ' '
-      // console.log('constructing:', cmd);
     }
     // Appends the remaining part of the command after the repeat block
     cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
@@ -69,8 +68,6 @@ function processCommand() {
 
 // Function to break down the command into individual actions
 function parseCommand(cmd) {
-  console.log(cmd)
-
   const parts = cmd.split(' ')
   const commandPairs = []
 
@@ -82,8 +79,6 @@ function parseCommand(cmd) {
     }
   }
 
-  console.log(commandPairs)
-
   for (const [command, parameter] of commandPairs) {
     executeCommand(command, parameter)
   }
@@ -93,8 +88,6 @@ function parseCommand(cmd) {
 function executeCommand(command, parameter) {
   // If the command string is empty, do nothing
   if (!command) return
-
-  console.log(command, parameter)
 
   // Hides any error message that might be visible
   hideError()
