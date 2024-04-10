@@ -186,7 +186,7 @@ function hideError(message) {
   errorElement.classList.add('hidden')
 }
 
-document.querySelector('form').addEventListener('submit', function (event) {
-  event.preventDefault()
+document.querySelector('form').addEventListener('submit', (e) => {
+  e.preventDefault()
   analyse()
 })
