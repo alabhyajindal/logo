@@ -58,7 +58,7 @@ function analyse() {
     cmd = temp.substring(0, startofrepeat)
     for (let i = 1; i <= repeatCount; i++) {
       cmd += temp.substring(temp.indexOf('[') + 1, temp.indexOf(']')) + ' '
-      console.log('constructing:', cmd)
+      // console.log('constructing:', cmd)
     }
     // Appends the remaining part of the command after the repeat block
     cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
@@ -69,85 +69,73 @@ function analyse() {
 
 // Function to break down the command into individual actions
 function breakdown(cmd) {
-  // Determines the number of commands based on spaces
-  const number_of_spaces = cmd.split(' ').length - 1
-  const number_of_commands = number_of_spaces + 1
+  console.log(cmd)
 
-  // Iterates over each command to process it
-  for (let i = 1; i <= number_of_commands; i++) {
-    // Checks for commands that are exactly two characters long
-    if (
-      cmd.startsWith('ct') ||
-      cmd.startsWith('cs') ||
-      cmd.startsWith('pu') ||
-      cmd.startsWith('pd')
-    ) {
-      // Processes two-character long commands
-      command(cmd.substring(0, 2))
-      // Trims the processed command from the input
-      cmd = cmd.substring(3).trim()
-    } else {
-      // Handles longer commands with parameters
-      let firstSpace = cmd.indexOf(' ')
-      let temp = cmd.substring(firstSpace + 1)
-      let secondSpace = temp.indexOf(' ') + cmd.length - temp.length
-      // Adjusts for commands without a second parameter
-      if (secondSpace < 3) {
-        secondSpace = cmd.length
-      }
-      // Processes the command found
-      command(cmd.substring(0, secondSpace))
-      // Trims the processed command from the input
-      cmd = cmd.substring(secondSpace).trim()
-      console.log('removing', cmd)
+  const parts = cmd.split(' ')
+  const commandPairs = []
+
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      const cmd = parts[i]
+      const param = parts[i + 1] ? parseInt(parts[i + 1], 10) : null
+      commandPairs.push([cmd, param])
     }
+  }
+
+  console.log(commandPairs)
+
+  for (const [cmd, param] of commandPairs) {
+    command(cmd, param)
   }
 }
 
 // Executes the specific command based on the input
-function command(cmd) {
+function command(cmd, param) {
   // If the command string is empty, do nothing
   if (!cmd) return
+
+  console.log(cmd, param)
 
   // Hides any error message that might be visible
   hideError()
 
-  // Processes rotation or direction change commands
-  if ((cmd.startsWith('rt') || cmd.startsWith('lt')) && cmd[2] === ' ') {
-    degrees = parseInt(cmd.substring(3))
-    // Converts left turns to negative degrees for standardization
-    if (cmd.startsWith('lt')) {
-      degrees *= -1
-    }
-    // Rotates the drawing cursor
-    rt(degrees)
-  } else if ((cmd.startsWith('fd') || cmd.startsWith('bk')) && cmd[2] === ' ') {
-    steps = parseInt(cmd.substring(3))
-    // Converts backward moves to negative steps
-    if (cmd.startsWith('bk')) {
-      steps *= -1
-    }
-    // Moves the drawing cursor forward or backward
-    fd(steps)
-  } else if (cmd.startsWith('pc') && cmd[2] === ' ') {
-    // Changes the pen color based on the provided color number
-    const pencolournumber = parseInt(cmd.substring(3))
-    pc(pencolournumber)
-  } else if (cmd === 'ct') {
-    // Clears the turtle (cursor or drawing point)
-    ct()
-  } else if (cmd === 'cs') {
-    // Clears the screen or drawing area
-    cs()
-  } else if (cmd === 'pu') {
-    // Lifts the pen to stop drawing
-    drawing = false
-  } else if (cmd === 'pd') {
-    // Puts the pen down to start drawing
-    drawing = true
-  } else {
-    // Shows an error if an unrecognized command is entered
-    showError(`Invalid command: ${cmd}`)
+  switch (cmd) {
+    case 'rt':
+    case 'lt':
+      // Converts left turns to negative degrees for standardization
+      const degrees = cmd === 'lt' ? -param : param
+      rt(degrees)
+      break
+    case 'fd':
+    case 'bk':
+      // Converts backward moves to negative steps
+      const steps = cmd === 'bk' ? -param : param
+      fd(steps)
+      break
+    case 'pc':
+      // Changes the pen color based on the provided color number
+      pc(param)
+      break
+    case 'ct':
+      // Clears the turtle (cursor or drawing point)
+      ct()
+      break
+    case 'cs':
+      // Clears the screen or drawing area
+      cs()
+      break
+    case 'pu':
+      // Lifts the pen to stop drawing
+      drawing = false
+      break
+    case 'pd':
+      // Puts the pen down to start drawing
+      drawing = true
+      break
+    default:
+      // Shows an error if an unrecognized command is entered
+      showError(`Invalid command: ${cmd}`)
+      break
   }
 }
 
