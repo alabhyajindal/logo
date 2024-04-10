@@ -107,6 +107,7 @@ function executeCommand(command, parameter) {
       break
     case 'pc':
       // Changes the pen color based on the provided color number
+      if (parameter === null) return
       pc(parameter)
       break
     case 'ct':
@@ -178,16 +179,14 @@ function cs() {
 
 function pc(penColorIndex) {
   const brightColors = [
-    'red',
-    'green',
-    'yellow',
-    'lime',
-    'orange',
-    'fuchsia',
-    'aqua'
+    '#FF69B4', // Hot Pink
+    '#00BFFF', // Deep Sky Blue
+    '#FF8C00', // Bright Orange
+    '#00FF00' // Lime Green
   ]
   // Using the modulus operator to cycle through the brightColors array
   penColor = brightColors[penColorIndex % brightColors.length]
+  inputElement.style.color = penColor
 }
 
 function displayError(message) {
