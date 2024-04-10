@@ -6,7 +6,7 @@ let centerX = 200
 let centerY = 200
 let currentX = centerX
 let currentY = centerY
-let pencolour = 'black'
+let penColour = 'black'
 let drawing = true
 
 const container = document.querySelector('#container')
@@ -39,26 +39,26 @@ function processCommand() {
   inputElement.focus()
 
   // Counts how many times 'repeat' appears in the command
-  const number_of_repeats = cmd.split('repeat').length - 1
+  const numberOfRepeats = cmd.split('repeat').length - 1
   // Checks if 'repeat' is used more than once, which is not allowed
-  if (number_of_repeats > 1) {
+  if (numberOfRepeats > 1) {
     displayError('Syntax Error: Only one repeat allowed per command')
-  } else if (number_of_repeats === 0) {
+  } else if (numberOfRepeats === 0) {
     // If 'repeat' is not used, process the command directly
     parseCommand(cmd)
   } else {
     // Handles processing of commands with one 'repeat' keyword
-    const startofrepeat = cmd.indexOf('repeat')
-    const endofnumber = cmd.indexOf('[')
+    const startOfRepeat = cmd.indexOf('repeat')
+    const endOfNumber = cmd.indexOf('[')
     // Extracts and converts the repeat count to an integer
-    const repeatCount = parseInt(cmd.substring(startofrepeat + 6, endofnumber))
+    const repeatCount = parseInt(cmd.substring(startOfRepeat + 6, endOfNumber))
 
     let temp = cmd
     // Constructs the command by repeating the specified segment
-    cmd = temp.substring(0, startofrepeat)
+    cmd = temp.substring(0, startOfRepeat)
     for (let i = 1; i <= repeatCount; i++) {
       cmd += temp.substring(temp.indexOf('[') + 1, temp.indexOf(']')) + ' '
-      // console.log('constructing:', cmd)
+      // console.log('constructing:', cmd);
     }
     // Appends the remaining part of the command after the repeat block
     cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
@@ -76,45 +76,45 @@ function parseCommand(cmd) {
 
   for (let i = 0; i < parts.length; i++) {
     if (i % 2 === 0) {
-      const cmd = parts[i]
-      const param = parts[i + 1] ? parseInt(parts[i + 1], 10) : null
-      commandPairs.push([cmd, param])
+      const command = parts[i]
+      const parameter = parts[i + 1] ? parseInt(parts[i + 1], 10) : null
+      commandPairs.push([command, parameter])
     }
   }
 
   console.log(commandPairs)
 
-  for (const [cmd, param] of commandPairs) {
-    executeCommand(cmd, param)
+  for (const [command, parameter] of commandPairs) {
+    executeCommand(command, parameter)
   }
 }
 
 // Executes the specific command based on the input
-function executeCommand(cmd, param) {
+function executeCommand(command, parameter) {
   // If the command string is empty, do nothing
-  if (!cmd) return
+  if (!command) return
 
-  console.log(cmd, param)
+  console.log(command, parameter)
 
   // Hides any error message that might be visible
   hideError()
 
-  switch (cmd) {
+  switch (command) {
     case 'rt':
     case 'lt':
       // Converts left turns to negative degrees for standardization
-      const degrees = cmd === 'lt' ? -param : param
+      const degrees = command === 'lt' ? -parameter : parameter
       rt(degrees)
       break
     case 'fd':
     case 'bk':
       // Converts backward moves to negative steps
-      const steps = cmd === 'bk' ? -param : param
+      const steps = command === 'bk' ? -parameter : parameter
       fd(steps)
       break
     case 'pc':
       // Changes the pen color based on the provided color number
-      pc(param)
+      pc(parameter)
       break
     case 'ct':
       // Clears the turtle (cursor or drawing point)
@@ -134,7 +134,7 @@ function executeCommand(cmd, param) {
       break
     default:
       // Shows an error if an unrecognized command is entered
-      displayError(`Invalid command: ${cmd}`)
+      displayError(`Invalid command: ${command}`)
       break
   }
 }
@@ -160,7 +160,7 @@ function fd(steps) {
   if (drawing) {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     path.setAttribute('d', `M ${currentX - x} ${currentY - y} l ${x} ${y}`)
-    path.setAttribute('stroke', pencolour)
+    path.setAttribute('stroke', penColour)
     path.setAttribute('fill', 'none')
     container.appendChild(path)
   }
@@ -183,7 +183,7 @@ function cs() {
   init()
 }
 
-function pc(pencolourNumber) {
+function pc(penColourNumber) {
   const brightColors = [
     'red',
     'green',
@@ -194,7 +194,7 @@ function pc(pencolourNumber) {
     'aqua'
   ]
   // Using the modulus operator to cycle through the brightColors array
-  pencolour = brightColors[pencolourNumber % brightColors.length]
+  penColour = brightColors[penColourNumber % brightColors.length]
 }
 
 function displayError(message) {
