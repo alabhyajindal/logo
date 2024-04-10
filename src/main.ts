@@ -6,7 +6,7 @@ let centerX = 200
 let centerY = 200
 let currentX = centerX
 let currentY = centerY
-let penColour = 'black'
+let penColor = 'black'
 let drawing = true
 
 const container = document.querySelector('#container')
@@ -160,7 +160,7 @@ function fd(steps) {
   if (drawing) {
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     path.setAttribute('d', `M ${currentX - x} ${currentY - y} l ${x} ${y}`)
-    path.setAttribute('stroke', penColour)
+    path.setAttribute('stroke', penColor)
     path.setAttribute('fill', 'none')
     container.appendChild(path)
   }
@@ -183,7 +183,7 @@ function cs() {
   init()
 }
 
-function pc(penColourNumber) {
+function pc(penColorIndex) {
   const brightColors = [
     'red',
     'green',
@@ -194,7 +194,7 @@ function pc(penColourNumber) {
     'aqua'
   ]
   // Using the modulus operator to cycle through the brightColors array
-  penColour = brightColors[penColourNumber % brightColors.length]
+  penColor = brightColors[penColorIndex % brightColors.length]
 }
 
 function displayError(message) {
