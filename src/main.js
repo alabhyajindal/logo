@@ -1,4 +1,3 @@
-let paper
 let turtle
 let currentDirection = 0
 let degrees = 0
@@ -16,15 +15,16 @@ init()
 
 function init() {
   const container = document.getElementById('container')
-  paper = Raphael(container, 400, 400)
-  drawturtle()
-}
-
-function drawturtle() {
-  turtle = paper.path(
-    'M ' + centerX + ' ' + centerY + ' l 10 10 l -10 -25 l -10 25 z'
+  const turtleElement = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'g'
   )
-  turtle.attr({ fill: 'red', stroke: '#3b4449' })
+  turtleElement.innerHTML = `
+    <path d="M 0 0 l 10 10 l -10 -25 l -10 25 z" fill="red" stroke="#3b4449"></path>
+  `
+  turtleElement.setAttribute('transform', `translate(${centerX}, ${centerY})`)
+  container.appendChild(turtleElement)
+  turtle = turtleElement
 }
 
 function analyse() {
@@ -116,37 +116,47 @@ function command(cmd) {
 
 function rt(degrees) {
   currentDirection += degrees
-  turtle.transform(`...R${degrees}`)
+  turtle.setAttribute(
+    'transform',
+    `translate(${currentX}, ${currentY}) rotate(${currentDirection})`
+  )
 }
 
 function fd(steps) {
   const radians = (currentDirection / 180) * Math.PI
-  turtle.transform(
-    `...T${steps * 10 * Math.sin(radians)},${steps * -10 * Math.cos(radians)}`
+  const x = steps * 10 * Math.sin(radians)
+  const y = steps * -10 * Math.cos(radians)
+  currentX += x
+  currentY += y
+  turtle.setAttribute(
+    'transform',
+    `translate(${currentX}, ${currentY}) rotate(${currentDirection})`
   )
   if (drawing) {
-    const path = paper.path(
-      `M ${currentX} ${currentY} l ${steps * 10 * Math.sin(radians)} ${steps * -10 * Math.cos(radians)}`
-    )
-    path.attr({ stroke: pencolour })
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    path.setAttribute('d', `M ${currentX - x} ${currentY - y} l ${x} ${y}`)
+    path.setAttribute('stroke', pencolour)
+    path.setAttribute('fill', 'none')
+    document.getElementById('container').appendChild(path)
   }
-  currentX += steps * 10 * Math.sin(radians)
-  currentY -= steps * 10 * Math.cos(radians)
 }
 
 function ct() {
   const Xmove = centerX - currentX
   const Ymove = centerY - currentY
-  turtle.transform(`...T${Xmove}, ${Ymove}R${360 - currentDirection}`)
-
+  turtle.setAttribute(
+    'transform',
+    `translate(${centerX}, ${centerY}) rotate(0)`
+  )
   currentX = centerX
   currentY = centerY
   currentDirection = 0
 }
 
 function cs() {
-  paper.clear()
-  drawturtle()
+  const container = document.getElementById('container')
+  container.innerHTML = ''
+  init()
 }
 
 function pc(pencolournumber) {
