@@ -9,8 +9,9 @@ let currentY = centerY
 let pencolour = 'black'
 let drawing = true
 
-const inputElement = document.querySelector('input')
 const container = document.querySelector('#container')
+const inputElement = document.querySelector('input')
+const errorElement = document.getElementById('error')
 
 init()
 
@@ -170,7 +171,7 @@ function fd(steps) {
     path.setAttribute('d', `M ${currentX - x} ${currentY - y} l ${x} ${y}`)
     path.setAttribute('stroke', pencolour)
     path.setAttribute('fill', 'none')
-    document.getElementById('container').appendChild(path)
+    container.appendChild(path)
   }
 }
 
@@ -218,13 +219,11 @@ function getColourFromNumber(pencolournumber) {
 }
 
 function showError(message) {
-  const errorElement = document.getElementById('error')
   errorElement.textContent = message
   errorElement.classList.remove('hidden')
 }
 
 function hideError(message) {
-  const errorElement = document.getElementById('error')
   errorElement.classList.add('hidden')
 }
 
