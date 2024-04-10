@@ -30,7 +30,7 @@ function init() {
 }
 
 // Defines a function to process the command entered by the user
-function analyse() {
+function processCommand() {
   // Trim spaces and convert input to lowercase for uniform processing
   let cmd = inputElement.value.trim().toLowerCase()
 
@@ -42,10 +42,10 @@ function analyse() {
   const number_of_repeats = cmd.split('repeat').length - 1
   // Checks if 'repeat' is used more than once, which is not allowed
   if (number_of_repeats > 1) {
-    showError('Syntax Error: Only one repeat allowed per command')
+    displayError('Syntax Error: Only one repeat allowed per command')
   } else if (number_of_repeats === 0) {
     // If 'repeat' is not used, process the command directly
-    breakdown(cmd)
+    parseCommand(cmd)
   } else {
     // Handles processing of commands with one 'repeat' keyword
     const startofrepeat = cmd.indexOf('repeat')
@@ -62,13 +62,13 @@ function analyse() {
     }
     // Appends the remaining part of the command after the repeat block
     cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
-    // Sends the constructed command for further breakdown
-    breakdown(cmd)
+    // Sends the constructed command for further parseCommand
+    parseCommand(cmd)
   }
 }
 
 // Function to break down the command into individual actions
-function breakdown(cmd) {
+function parseCommand(cmd) {
   console.log(cmd)
 
   const parts = cmd.split(' ')
@@ -85,12 +85,12 @@ function breakdown(cmd) {
   console.log(commandPairs)
 
   for (const [cmd, param] of commandPairs) {
-    command(cmd, param)
+    executeCommand(cmd, param)
   }
 }
 
 // Executes the specific command based on the input
-function command(cmd, param) {
+function executeCommand(cmd, param) {
   // If the command string is empty, do nothing
   if (!cmd) return
 
@@ -134,7 +134,7 @@ function command(cmd, param) {
       break
     default:
       // Shows an error if an unrecognized command is entered
-      showError(`Invalid command: ${cmd}`)
+      displayError(`Invalid command: ${cmd}`)
       break
   }
 }
@@ -183,33 +183,21 @@ function cs() {
   init()
 }
 
-function pc(pencolournumber) {
-  pencolour = getColourFromNumber(pencolournumber)
-}
-
-function getColourFromNumber(pencolournumber) {
-  const colours = [
-    'black',
-    'blue',
+function pc(pencolourNumber) {
+  const brightColors = [
     'red',
     'green',
     'yellow',
-    'purple',
     'lime',
-    'silver',
     'orange',
-    'brown',
-    'navy',
-    'maroon',
-    'aqua',
     'fuchsia',
-    'teal',
-    'white'
+    'aqua'
   ]
-  return colours[pencolournumber % 16]
+  // Using the modulus operator to cycle through the brightColors array
+  pencolour = brightColors[pencolourNumber % brightColors.length]
 }
 
-function showError(message) {
+function displayError(message) {
   errorElement.textContent = message
   errorElement.classList.remove('hidden')
 }
@@ -220,5 +208,5 @@ function hideError() {
 
 form.addEventListener('submit', (e) => {
   e.preventDefault()
-  analyse()
+  processCommand()
 })
