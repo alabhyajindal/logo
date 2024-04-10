@@ -1,6 +1,6 @@
 let paper
 let turtle
-let current_direction = 0
+let currentDirection = 0
 let degrees = 0
 let steps = 0
 let centerX = 200
@@ -8,9 +8,7 @@ let centerY = 200
 let currentX = centerX
 let currentY = centerY
 let pencolour = 'black'
-let LastCommand = ''
 let drawing = true
-let NumberofCommands = 1
 
 const inputField = document.querySelector('input')
 
@@ -117,12 +115,12 @@ function command(cmd) {
 }
 
 function rt(degrees) {
-  current_direction += degrees
+  currentDirection += degrees
   turtle.transform(`...R${degrees}`)
 }
 
 function fd(steps) {
-  const radians = (current_direction / 180) * Math.PI
+  const radians = (currentDirection / 180) * Math.PI
   turtle.transform(
     `...T${steps * 10 * Math.sin(radians)},${steps * -10 * Math.cos(radians)}`
   )
@@ -139,11 +137,11 @@ function fd(steps) {
 function ct() {
   const Xmove = centerX - currentX
   const Ymove = centerY - currentY
-  turtle.transform(`...T${Xmove}, ${Ymove}R${360 - current_direction}`)
+  turtle.transform(`...T${Xmove}, ${Ymove}R${360 - currentDirection}`)
 
   currentX = centerX
   currentY = centerY
-  current_direction = 0
+  currentDirection = 0
 }
 
 function cs() {
