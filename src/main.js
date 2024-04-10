@@ -11,7 +11,8 @@ let pencolour = 'black'
 let LastCommand = ''
 let drawing = true
 let NumberofCommands = 1
-let CmdHistory = []
+
+const inputField = document.querySelector('input')
 
 init()
 
@@ -29,15 +30,8 @@ function drawturtle() {
 }
 
 function analyse() {
-  const inputField = document.querySelector('input')
   let cmd = inputField.value.trim().toLowerCase()
   inputField.value = cmd
-
-  CmdHistory[NumberofCommands] = cmd
-  NumberofCommands++
-  if (NumberofCommands === 30) {
-    showError('Trophy Form is showing')
-  }
 
   const number_of_repeats = cmd.split('repeat').length - 1
   if (number_of_repeats > 1) {
@@ -88,6 +82,8 @@ function breakdown(cmd) {
 }
 
 function command(cmd) {
+  if (!cmd) return
+
   if ((cmd.startsWith('rt') || cmd.startsWith('lt')) && cmd[2] === ' ') {
     degrees = parseInt(cmd.substring(3))
     if (cmd.startsWith('lt')) {
