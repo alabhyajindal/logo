@@ -84,6 +84,8 @@ function breakdown(cmd) {
 function command(cmd) {
   if (!cmd) return
 
+  hideError()
+
   if ((cmd.startsWith('rt') || cmd.startsWith('lt')) && cmd[2] === ' ') {
     degrees = parseInt(cmd.substring(3))
     if (cmd.startsWith('lt')) {
@@ -147,11 +149,6 @@ function ct() {
 function cs() {
   paper.clear()
   drawturtle()
-  currentX = centerX
-  currentY = centerY
-  current_direction = 0
-  drawing = true
-  pencolour = 'black'
 }
 
 function pc(pencolournumber) {
@@ -184,6 +181,11 @@ function showError(message) {
   const errorElement = document.getElementById('error')
   errorElement.textContent = message
   errorElement.classList.remove('hidden')
+}
+
+function hideError(message) {
+  const errorElement = document.getElementById('error')
+  errorElement.classList.add('hidden')
 }
 
 document.querySelector('form').addEventListener('submit', function (event) {
