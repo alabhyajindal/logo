@@ -111,19 +111,15 @@ function executeCommand(command, parameter) {
       pc(parameter)
       break
     case 'ct':
-      // Clears the turtle (cursor or drawing point)
       ct()
       break
     case 'cs':
-      // Clears the screen or drawing area
       cs()
       break
     case 'pu':
-      // Lifts the pen to stop drawing
       drawing = false
       break
     case 'pd':
-      // Puts the pen down to start drawing
       drawing = true
       break
     default:
@@ -161,8 +157,6 @@ function fd(steps) {
 }
 
 function ct() {
-  const Xmove = centerX - currentX
-  const Ymove = centerY - currentY
   turtle.setAttribute(
     'transform',
     `translate(${centerX}, ${centerY}) rotate(0)`
