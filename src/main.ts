@@ -1,109 +1,234 @@
-const svg = document.querySelector('#svg')!
-const input = document.querySelector('input')!
-const button = document.querySelector('button')!
-const form = document.querySelector('form')!
-const errorElement = document.querySelector('#error')!
+let turtle
+let currentDirection = 0
+let degrees = 0
+let steps = 0
+let centerX = 200
+let centerY = 200
+let currentX = centerX
+let currentY = centerY
+let pencolour = 'black'
+let drawing = true
 
-function isValidCommand(cmd: string) {
-  const validCommands = ['rt']
-  if (validCommands.includes(cmd)) return true
-  return false
+const inputElement = document.querySelector('input')
+const container = document.querySelector('#container')
+
+init()
+
+function init() {
+  const turtleElement = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'g'
+  )
+  turtleElement.innerHTML = `
+    <path d="M 0 0 l 10 10 l -10 -25 l -10 25 z" fill="red" stroke="black"></path>
+  `
+  turtleElement.setAttribute('transform', `translate(${centerX}, ${centerY})`)
+  container.appendChild(turtleElement)
+  turtle = turtleElement
 }
 
-function validateRotateArgument(arg: string, deg: number) {
-  let message
-  if (isNaN(deg)) message = `Invalid argument: ${arg}.`
-  if (deg < -360) {
-    message = `Invalid argument: Rotation degree should be greater than or equal to -360.`
+// Defines a function to process the command entered by the user
+function analyse() {
+  // Trim spaces and convert input to lowercase for uniform processing
+  let cmd = inputElement.value.trim().toLowerCase()
+
+  // Clears the input field and focuses it for the next command
+  inputElement.value = ''
+  inputElement.focus()
+
+  // Counts how many times 'repeat' appears in the command
+  const number_of_repeats = cmd.split('repeat').length - 1
+  // Checks if 'repeat' is used more than once, which is not allowed
+  if (number_of_repeats > 1) {
+    showError('Syntax Error: Only one repeat allowed per command')
+  } else if (number_of_repeats === 0) {
+    // If 'repeat' is not used, process the command directly
+    breakdown(cmd)
+  } else {
+    // Handles processing of commands with one 'repeat' keyword
+    const startofrepeat = cmd.indexOf('repeat')
+    const endofnumber = cmd.indexOf('[')
+    // Extracts and converts the repeat count to an integer
+    const repeatCount = parseInt(cmd.substring(startofrepeat + 6, endofnumber))
+
+    let temp = cmd
+    // Constructs the command by repeating the specified segment
+    cmd = temp.substring(0, startofrepeat)
+    for (let i = 1; i <= repeatCount; i++) {
+      cmd += temp.substring(temp.indexOf('[') + 1, temp.indexOf(']')) + ' '
+    }
+    // Appends the remaining part of the command after the repeat block
+    cmd += temp.substring(temp.indexOf(']') + 1, temp.length)
+    // Sends the constructed command for further breakdown
+    breakdown(cmd)
   }
-  if (deg > 360) {
-    message =
-      'Invalid argument: Rotation degree should be less than or equal to 360.'
-  }
-  if (message) showError(message)
-  else hideError()
 }
 
-function showError(message: string) {
+// Function to break down the command into individual actions
+function breakdown(cmd) {
+  // Determines the number of commands based on spaces
+  const number_of_spaces = cmd.split(' ').length - 1
+  const number_of_commands = number_of_spaces + 1
+
+  // Iterates over each command to process it
+  for (let i = 1; i <= number_of_commands; i++) {
+    // Checks for commands that are exactly two characters long
+    if (
+      cmd.startsWith('ct') ||
+      cmd.startsWith('cs') ||
+      cmd.startsWith('pu') ||
+      cmd.startsWith('pd')
+    ) {
+      // Processes two-character long commands
+      command(cmd.substring(0, 2))
+      // Trims the processed command from the input
+      cmd = cmd.substring(3).trim()
+    } else {
+      // Handles longer commands with parameters
+      let firstSpace = cmd.indexOf(' ')
+      let temp = cmd.substring(firstSpace + 1)
+      let secondSpace = temp.indexOf(' ') + cmd.length - temp.length
+      // Adjusts for commands without a second parameter
+      if (secondSpace < 3) {
+        secondSpace = cmd.length
+      }
+      // Processes the command found
+      command(cmd.substring(0, secondSpace))
+      // Trims the processed command from the input
+      cmd = cmd.substring(secondSpace).trim()
+    }
+  }
+}
+
+// Executes the specific command based on the input
+function command(cmd) {
+  // If the command string is empty, do nothing
+  if (!cmd) return
+
+  // Hides any error message that might be visible
+  hideError()
+
+  // Processes rotation or direction change commands
+  if ((cmd.startsWith('rt') || cmd.startsWith('lt')) && cmd[2] === ' ') {
+    degrees = parseInt(cmd.substring(3))
+    // Converts left turns to negative degrees for standardization
+    if (cmd.startsWith('lt')) {
+      degrees *= -1
+    }
+    // Rotates the drawing cursor
+    rt(degrees)
+  } else if ((cmd.startsWith('fd') || cmd.startsWith('bk')) && cmd[2] === ' ') {
+    steps = parseInt(cmd.substring(3))
+    // Converts backward moves to negative steps
+    if (cmd.startsWith('bk')) {
+      steps *= -1
+    }
+    // Moves the drawing cursor forward or backward
+    fd(steps)
+  } else if (cmd.startsWith('pc') && cmd[2] === ' ') {
+    // Changes the pen color based on the provided color number
+    const pencolournumber = parseInt(cmd.substring(3))
+    pc(pencolournumber)
+  } else if (cmd === 'ct') {
+    // Clears the turtle (cursor or drawing point)
+    ct()
+  } else if (cmd === 'cs') {
+    // Clears the screen or drawing area
+    cs()
+  } else if (cmd === 'pu') {
+    // Lifts the pen to stop drawing
+    drawing = false
+  } else if (cmd === 'pd') {
+    // Puts the pen down to start drawing
+    drawing = true
+  } else {
+    // Shows an error if an unrecognized command is entered
+    showError(`Invalid command: ${cmd}`)
+  }
+}
+
+function rt(degrees) {
+  currentDirection += degrees
+  turtle.setAttribute(
+    'transform',
+    `translate(${currentX}, ${currentY}) rotate(${currentDirection})`
+  )
+}
+
+function fd(steps) {
+  const radians = (currentDirection / 180) * Math.PI
+  const x = steps * 10 * Math.sin(radians)
+  const y = steps * -10 * Math.cos(radians)
+  currentX += x
+  currentY += y
+  turtle.setAttribute(
+    'transform',
+    `translate(${currentX}, ${currentY}) rotate(${currentDirection})`
+  )
+  if (drawing) {
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    path.setAttribute('d', `M ${currentX - x} ${currentY - y} l ${x} ${y}`)
+    path.setAttribute('stroke', pencolour)
+    path.setAttribute('fill', 'none')
+    document.getElementById('container').appendChild(path)
+  }
+}
+
+function ct() {
+  const Xmove = centerX - currentX
+  const Ymove = centerY - currentY
+  turtle.setAttribute(
+    'transform',
+    `translate(${centerX}, ${centerY}) rotate(0)`
+  )
+  currentX = centerX
+  currentY = centerY
+  currentDirection = 0
+}
+
+function cs() {
+  container.innerHTML = ''
+  init()
+}
+
+function pc(pencolournumber) {
+  pencolour = getColourFromNumber(pencolournumber)
+}
+
+function getColourFromNumber(pencolournumber) {
+  const colours = [
+    'black',
+    'blue',
+    'red',
+    'green',
+    'yellow',
+    'purple',
+    'lime',
+    'silver',
+    'orange',
+    'brown',
+    'navy',
+    'maroon',
+    'aqua',
+    'fuchsia',
+    'teal',
+    'white'
+  ]
+  return colours[pencolournumber % 16]
+}
+
+function showError(message) {
+  const errorElement = document.getElementById('error')
+  errorElement.textContent = message
   errorElement.classList.remove('hidden')
-  errorElement.classList.add('block')
-  errorElement.innerHTML = message
-
-  throw new Error(message)
 }
 
-function hideError() {
-  errorElement.classList.remove('block')
+function hideError(message) {
+  const errorElement = document.getElementById('error')
   errorElement.classList.add('hidden')
 }
 
-function drawCursor(x: number, y: number) {
-  const originPoint = `${x},${y}`
-  const leftPoint = `${x - 10},${y + 10}`
-  const tipPoint = `${x},${y - 15}`
-  const rightPoint = `${x + 10},${y + 10}`
-
-  const cursor = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-  cursor.setAttribute(
-    'd',
-    `M${originPoint} L${leftPoint} L${tipPoint} L${rightPoint} L${originPoint}`
-  )
-  cursor.setAttribute('stroke', 'black')
-  cursor.setAttribute('fill', 'red')
-  cursor.setAttribute('transform', `rotate(0)`)
-  cursor.id = 'cursor'
-  svg.appendChild(cursor)
-}
-
-function getCursorMidpoints(): { x: number; y: number } {
-  const cursor = document.querySelector('#cursor')!
-  const d = cursor.getAttribute('d')!.split(' ')
-
-  const numbers = d
-    .join(' ')
-    .match(/-?\d+/g)
-    ?.map((n) => Number(n))
-
-  if (!numbers) throw new Error('Something went wrong')
-
-  const leftSum = numbers[2] + numbers[3]
-  const rightSum = numbers[6] + numbers[7]
-
-  const x = leftSum / 2
-  const y = rightSum / 2
-  return { x, y }
-}
-
-function rt(deg: number) {
-  const cursor = document.querySelector('#cursor')!
-  const rotation = cursor.getAttribute('transform')?.match(/-?\d+/g)
-  if (!rotation) return
-  const currentDeg = Number(rotation[0])
-  const newDeg = (currentDeg + deg) % 360
-  const { x, y } = getCursorMidpoints()
-  cursor.setAttribute('transform', `rotate(${newDeg} ${x} ${y})`)
-}
-
-function execute(e: SubmitEvent) {
+document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault()
-
-  const cmd = input.value.split(' ')[0]
-  const arg = input.value.split(' ')[1]
-  input.value = ''
-
-  if (!isValidCommand(cmd)) showError(`Invalid command: ${cmd}.`)
-  if (!arg) showError(`Missing argument.`)
-
-  switch (cmd) {
-    case 'rt':
-      const deg = Number(arg)
-      validateRotateArgument(arg, deg)
-      rt(deg)
-      break
-  }
-}
-
-drawCursor(200, 200)
-rt(45)
-
-form.addEventListener('submit', execute)
+  analyse()
+})
