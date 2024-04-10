@@ -26,7 +26,7 @@ function drawturtle() {
   turtle = paper.path(
     'M ' + centerX + ' ' + centerY + ' l 10 10 l -10 -25 l -10 25 z'
   )
-  turtle.attr({ gradient: '0-#fff-#f00-#fff', stroke: '#3b4449' })
+  turtle.attr({ fill: 'red', stroke: '#3b4449' })
 }
 
 function analyse() {
