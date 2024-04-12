@@ -7,7 +7,8 @@ const commandsMap = {
   'lt': (degree) => turtle.rt(-degree),
   'pd': () => turtle.pen = true,
   'pu': () => turtle.pen = false,
-  'ct': () => turtle.ct()
+  'ct': () => turtle.ct(),
+  'cs': () => turtle.init()
 }
 
 class Turtle {
@@ -30,7 +31,7 @@ class Turtle {
     turtleElement.innerHTML = `
       <path d="M 0 0 l 10 10 l -10 -25 l -10 25 z" fill="red" stroke="black"></path>
     `
-    turtleElement.setAttribute('transform', `translate(${this.x}, ${this.y})`)
+    turtleElement.setAttribute('transform', `translate(${this.x}, ${this.y}) rotate(${this.direction})`)
     container.appendChild(turtleElement)
     this.element = turtleElement
   }
