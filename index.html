@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="/src/index.css" />
   </head>
   <body>
-    <div class="container">
-      <section class="sidebar">
+    <div class="app">
+      <aside>
         <h1>The Logo Programming Langauge</h1>
         <p class="description">
           Logo is a visual programming language. Type commands into the input
           and experiment. Draw shapes, have fun.
         </p>
-        <div class="command">
+        <section class="commands">
           <div>
             <strong>rt &lt;degree&gt;</strong>
             <p>rotate right</p>
@@ -55,10 +55,10 @@
             <strong>ct</strong>
             <p>center turtle</p>
           </div>
-        </div>
-      </section>
+        </section>
+      </aside>
       <main>
-        <svg id="container" width="400" height="400"></svg>
+        <svg width="400" height="400"></svg>
         <form>
           <input
             type="text"
@@ -68,7 +68,7 @@
           />
           <button>Go</button>
         </form>
-        <p id="error" class="error-message"></p>
+        <p id="error"></p>
       </main>
     </div>
 

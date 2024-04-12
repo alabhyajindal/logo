@@ -9,7 +9,7 @@ let currentY = centerY
 let penColor = 'black'
 let drawing = true
 
-const container = document.querySelector('#container')
+const container = document.querySelector('svg')
 const inputElement = document.querySelector('input')
 const errorElement = document.getElementById('error')
 const form = document.querySelector('form')
@@ -176,7 +176,7 @@ function pc(penColorIndex) {
     '#FF69B4', // Hot Pink
     '#00BFFF', // Deep Sky Blue
     '#FF8C00', // Bright Orange
-    '#00FF00' // Lime Green
+    '#00FF00', // Lime Green
   ]
   // Using the modulus operator to cycle through the brightColors array
   penColor = brightColors[penColorIndex % brightColors.length]
