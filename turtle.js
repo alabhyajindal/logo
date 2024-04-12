@@ -6,11 +6,13 @@ const commandsMap = {
   'rt': (degree) => turtle.rt(degree),
   'lt': (degree) => turtle.rt(-degree),
   'pd': () => turtle.pen = true,
-  'pu': () => turtle.pen = false
+  'pu': () => turtle.pen = false,
+  'ct': () => turtle.ct()
 }
 
 class Turtle {
   constructor(x, y, direction) {
+    this.center = { x, y }
     this.x = x
     this.y = y
     this.direction = direction
@@ -57,6 +59,15 @@ class Turtle {
 
   rt(degrees) {
     this.direction += degrees
+    this.element.setAttribute(
+      'transform',
+      `translate(${this.x}, ${this.y}) rotate(${this.direction})`
+    )
+  }
+  
+  ct() {
+    this.x = this.center.x
+    this.y = this.center.y
     this.element.setAttribute(
       'transform',
       `translate(${this.x}, ${this.y}) rotate(${this.direction})`

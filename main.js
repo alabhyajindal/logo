@@ -10,7 +10,7 @@ form.addEventListener('submit', (e) => {
 })
 
 function main() {
-  const code = 'fd 10 lt 90 fd 10 lt 90 fd 10 rt 90 lt 180 fd 10'
+  const code = 'bk 10 rt 90 fd 10 ct fd 10'
 
   turtle = new Turtle(200, 200, 0)
   turtle.init()
@@ -24,6 +24,7 @@ function execute(tokens) {
   for (let token of tokens) {
     const { name, arg } = token
     commandsMap[name](arg)
+    console.log(name, turtle)
   }
   
 }
