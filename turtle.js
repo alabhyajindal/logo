@@ -1,6 +1,9 @@
-const code = 'repeat 36 [lt 10 pu fd 1 pd repeat 120 [fd 2 rt 3]]'
-
 const container = document.querySelector('svg')
+
+const commandsMap = {
+  'fd': (steps) => turtle.fd(steps),
+  'rt': (degree) => turtle.rt(degree)
+}
 
 class Turtle {
   constructor(x, y, direction) {
@@ -47,7 +50,12 @@ class Turtle {
       container.appendChild(path)
     }
   }
-}
 
-const turtle = new Turtle(200, 200, 0)
-turtle.init()
+  rt(degrees) {
+    this.direction += degrees
+    this.element.setAttribute(
+      'transform',
+      `translate(${this.x}, ${this.y}) rotate(${this.direction})`
+    )
+  }
+}
