@@ -16,7 +16,7 @@ class Parser {
   tokenize() {
     const tokens = []
     const words = this.text.split(' ')
-    const dynamic = ['fd', 'rt', 'pc']
+    const dynamic = ['fd', 'bk', 'rt', 'lt', 'pc']
     const fixed = ['cs', 'ct', 'pd', 'pu']
 
     console.log(words)

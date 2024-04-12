@@ -10,7 +10,7 @@ form.addEventListener('submit', (e) => {
 })
 
 function main() {
-  const code = 'fd 10 rt 90 pu fd 10 rt 90 pd fd 10'
+  const code = 'fd 10 lt 90 fd 10 lt 90 fd 10 rt 90 lt 180 fd 10'
 
   turtle = new Turtle(200, 200, 0)
   turtle.init()
