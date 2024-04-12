@@ -9,10 +9,10 @@ let currentY = centerY
 let penColor = 'black'
 let drawing = true
 
-const container = document.querySelector('svg')
-const inputElement = document.querySelector('input')
-const errorElement = document.getElementById('error')
-const form = document.querySelector('form')
+const container = document.querySelector('svg')!
+const inputElement = document.querySelector('input')!
+const errorElement = document.getElementById('error')!
+const form = document.querySelector('form')!
 
 init()
 

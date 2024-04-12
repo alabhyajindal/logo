@@ -79,6 +79,7 @@ input {
   border: 1px solid #6b7280;
   border-radius: 2px;
   padding: 0.4rem 0.6rem;
+  height: 2rem;
   font-family: 'Fira Mono', monospace;
   font-weight: bold;
   outline: none;
