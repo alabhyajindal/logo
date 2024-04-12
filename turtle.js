@@ -2,7 +2,9 @@ const container = document.querySelector('svg')
 
 const commandsMap = {
   'fd': (steps) => turtle.fd(steps),
-  'rt': (degree) => turtle.rt(degree)
+  'rt': (degree) => turtle.rt(degree),
+  'pd': () => turtle.pen = true,
+  'pu': () => turtle.pen = false
 }
 
 class Turtle {

@@ -8,9 +8,6 @@
 //   commands: token[]
 // }
 
-// const code = 'repeat 36 [lt 10 pu fd 1 pd repeat 120 [fd 2 rt 3]]'
-
-
 class Parser {
   constructor(text) {
     this.text = text
@@ -21,6 +18,8 @@ class Parser {
     const words = this.text.split(' ')
     const dynamic = ['fd', 'rt', 'pc']
     const fixed = ['cs', 'ct', 'pd', 'pu']
+
+    console.log(words)
 
     for (let i = 0; i < words.length; i++) {
       const word = words[i]
