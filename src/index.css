@@ -78,8 +78,8 @@ form {
 input {
   flex-grow: 1;
   border: 1px solid #6b7280;
-  border-radius: 1px;
-  padding: 0.3rem 0.6rem;
+  border-radius: 2px;
+  padding: 0.4rem 0.6rem;
   font-family: 'Fira Mono', monospace;
   font-weight: bold;
   outline: none;
@@ -94,8 +94,8 @@ button {
   border: none;
   background-color: #3b82f6;
   color: white;
-  border-radius: 1px;
-  padding: 0.25rem 1.5rem;
+  border-radius: 2px;
+  padding: 0.4rem 1.6rem;
   font-family: monospace;
   font-weight: semibold;
   cursor: pointer;
