@@ -10,13 +10,15 @@ form.addEventListener('submit', (e) => {
 })
 
 function main() {
-  const code = 'fd 10 rt 90 cs fd 10 rt 90 cs'
+  // const code = 'repeat 4 [fd 10 rt 90]'
+  const code = 'fd 10 rt 90 fd 10'
 
   turtle = new Turtle(200, 200, 0)
   turtle.init()
 
   const parser = new Parser(code)
   const tokens = parser.tokenize()
+  console.log(tokens)
   execute(tokens)
 }
 
@@ -24,9 +26,7 @@ function execute(tokens) {
   for (let token of tokens) {
     const { name, arg } = token
     commandsMap[name](arg)
-    console.log(name, turtle)
   }
-  
 }
 
 main()

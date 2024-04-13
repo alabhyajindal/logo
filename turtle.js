@@ -1,14 +1,14 @@
 const container = document.querySelector('svg')
 
 const commandsMap = {
-  'fd': (steps) => turtle.fd(steps),
-  'bk': (steps) => turtle.fd(-steps),
-  'rt': (degree) => turtle.rt(degree),
-  'lt': (degree) => turtle.rt(-degree),
-  'pd': () => turtle.pen = true,
-  'pu': () => turtle.pen = false,
-  'ct': () => turtle.ct(),
-  'cs': () => turtle.init()
+  fd: (steps) => turtle.fd(steps),
+  bk: (steps) => turtle.fd(-steps),
+  rt: (degree) => turtle.rt(degree),
+  lt: (degree) => turtle.rt(-degree),
+  pd: () => (turtle.pen = true),
+  pu: () => (turtle.pen = false),
+  ct: () => turtle.ct(),
+  cs: () => turtle.init(),
 }
 
 class Turtle {
@@ -31,7 +31,10 @@ class Turtle {
     turtleElement.innerHTML = `
       <path d="M 0 0 l 10 10 l -10 -25 l -10 25 z" fill="red" stroke="black"></path>
     `
-    turtleElement.setAttribute('transform', `translate(${this.x}, ${this.y}) rotate(${this.direction})`)
+    turtleElement.setAttribute(
+      'transform',
+      `translate(${this.x}, ${this.y}) rotate(${this.direction})`
+    )
     container.appendChild(turtleElement)
     this.element = turtleElement
   }
@@ -65,7 +68,7 @@ class Turtle {
       `translate(${this.x}, ${this.y}) rotate(${this.direction})`
     )
   }
-  
+
   ct() {
     this.x = this.center.x
     this.y = this.center.y
