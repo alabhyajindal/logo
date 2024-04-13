@@ -19,7 +19,7 @@ function main() {
   const parser = new Parser(code)
   const tokens = parser.tokenize()
   console.log(tokens)
-  execute(tokens)
+  // execute(tokens)
 }
 
 function execute(tokens) {

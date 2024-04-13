@@ -14,26 +14,41 @@ const fixed = ['cs', 'ct', 'pd', 'pu']
 class Parser {
   constructor(text) {
     this.text = text.split(' ')
-    this.index = 0
     this.tokens = []
+    this.index = 0
+    this.trunk = true
   }
 
   tokenize() {
     if (this.text.length == 0) return this.tokens
+    console.log('this.text', this.text)
 
-    const word = this.text[this.index]
+    let word = this.text[0]
+    // console.log(word)
+    // word = word.replace('[', '')
+    // word = word.replace(']', '')
+
+    const parent = this.trunk ? this.tokens : this.tokens[this.index].commands
 
     if (word == 'repeat') {
-      console.log(word)
+      const start = this.text.findIndex((t) => t.includes('['))
+      parent.push({
+        name: word,
+        arg: parseInt(this.text[1]),
+        commands: [],
+      })
+      console.log(this.tokens)
+
+      this.index++
+      this.trunk = false
     }
 
     if (dynamic.includes(word)) {
-      this.tokens.push({ name: word, arg: parseInt(this.text[this.index + 1]) })
+      parent.push({ name: word, arg: parseInt(this.text[1]) })
     } else if (fixed.includes(word)) {
-      this.tokens.push({ name: word })
+      parent.push({ name: word })
     }
 
-    this.index++
     this.text.shift()
     return this.tokenize()
 
