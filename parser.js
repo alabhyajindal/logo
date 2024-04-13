@@ -49,22 +49,5 @@ class Parser {
 
     this.text.shift()
     return this.tokenize()
-
-    // for (let i = 0; i < words.length; i++) {
-    //   const word = words[i]
-
-    //   // if (word == 'repeat') {
-    //   //   const token = {name: word, arg: parseInt(words[i + 1]), commands: []}
-    //   //   const startIndex = words.findIndex(w => w.includes('['))
-    //   //   const endIndex = words.findIndex(w => w.includes(']'))
-    //   //   const nested = words.slice(startIndex, endIndex + 1)
-    //   //   for (let i = 0; i < nested.length; i ++) {
-    //   //     let word = nested[i]
-    //   //     word = word.replace('[', '')
-    //   //     word = word.replace(']', '')
-    //   //     console.log(word)
-    //   //   }
-    //   //   tokens.push(token)
-    //   // }
   }
 }

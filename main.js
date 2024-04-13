@@ -10,15 +10,17 @@ form.addEventListener('submit', (e) => {
 })
 
 function main() {
-  const code = 'repeat 4 [fd 10 rt 90]'
   // const code = 'fd 10 rt 90 fd 10'
+  // const code = 'repeat 4 [fd 10 rt 90]'
+  const code = 'repeat 36 [lt 10 pu fd 1 pd repeat 120 [fd 2 rt 3]]'
 
   turtle = new Turtle(200, 200, 0)
   turtle.init()
 
   const parser = new Parser(code)
   const tokens = parser.tokenize()
-  execute(tokens)
+  console.log(tokens)
+  // execute(tokens)
 }
 
 function execute(tokens) {
