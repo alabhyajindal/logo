@@ -15,18 +15,17 @@ class Parser {
   constructor(text) {
     this.text = text.split(' ')
     this.tokens = []
-    this.index = 0
+    this.index = -1
     this.trunk = true
   }
 
   tokenize() {
     if (this.text.length == 0) return this.tokens
-    console.log('this.text', this.text)
+    // console.log('this.text', this.text)
 
     let word = this.text[0]
-    // console.log(word)
-    // word = word.replace('[', '')
-    // word = word.replace(']', '')
+    word = word.replace('[', '')
+    word = word.replace(']', '')
 
     const parent = this.trunk ? this.tokens : this.tokens[this.index].commands
 
@@ -37,7 +36,6 @@ class Parser {
         arg: parseInt(this.text[1]),
         commands: [],
       })
-      console.log(this.tokens)
 
       this.index++
       this.trunk = false
