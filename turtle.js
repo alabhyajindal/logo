@@ -40,10 +40,9 @@ class Turtle {
   }
 
   fd(steps) {
-    const scale = 1
     const radians = (this.direction / 180) * Math.PI
-    const x = steps * scale * Math.sin(radians)
-    const y = steps * scale * -1 * Math.cos(radians)
+    const x = steps * 1 * Math.sin(radians)
+    const y = steps * -1 * Math.cos(radians)
     this.x += x
     this.y += y
     this.element.setAttribute(
