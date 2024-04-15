@@ -6,7 +6,8 @@
 
 body {
   background-color: #e5e7eb;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans',
+    Arial, sans-serif;
 }
 
 .app {
@@ -51,7 +52,7 @@ h1 {
   margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
+  gap: 1.15rem;
   font-size: 0.875rem;
 }
 
