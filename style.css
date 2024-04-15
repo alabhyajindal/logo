@@ -17,7 +17,6 @@ body {
   justify-content: center;
   gap: 3rem;
   padding: 1rem;
-  max-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -33,7 +32,7 @@ aside {
 
 @media (min-width: 768px) {
   aside {
-    width: 16rem;
+    width: 20rem;
   }
 }
 
