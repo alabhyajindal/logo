@@ -5,21 +5,19 @@ let turtle
 
 form.addEventListener('submit', (e) => {
   e.preventDefault()
-  main()
+  main(input.value)
   input.value = ''
 })
 
-function main() {
-  const code = 'repeat 36 [lt 10 repeat 12 [fd 24 rt 30] lt 120]'
-
+function main(program) {
   turtle = new Turtle(200, 200, 0)
   turtle.init()
-  const parser = new Parser(code)
-  const commands = parser.parse()
-  execute(commands)
+  const parser = new Parser(program)
+  const tokens = parser.parse()
+  execute(tokens)
 }
 
-async function execute(tokens) {
+function execute(tokens) {
   for (let token of tokens) {
     let { name, arg, commands } = token
     arg = parseInt(arg)
