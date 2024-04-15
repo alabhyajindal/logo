@@ -1,7 +1,8 @@
 const input = document.querySelector('input')
 const form = document.querySelector('form')
 
-let turtle
+let turtle = new Turtle(200, 200, 0)
+turtle.init()
 
 form.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -10,8 +11,6 @@ form.addEventListener('submit', (e) => {
 })
 
 function main(program) {
-  turtle = new Turtle(200, 200, 0)
-  turtle.init()
   const parser = new Parser(program)
   const tokens = parser.parse()
   execute(tokens)
