@@ -9,6 +9,8 @@ const commandsMap = {
   pu: () => (turtle.pen = false),
   ct: () => turtle.ct(),
   cs: () => turtle.init(),
+  ht: () => turtle.ht(),
+  st: () => turtle.st(),
 }
 
 class Turtle {
@@ -76,5 +78,13 @@ class Turtle {
       'transform',
       `translate(${this.x}, ${this.y}) rotate(${this.direction})`
     )
+  }
+
+  ht() {
+    this.element.style.visibility = 'hidden'
+  }
+
+  st() {
+    this.element.style.visibility = 'visible'
   }
 }

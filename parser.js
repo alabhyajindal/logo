@@ -23,7 +23,7 @@ function getWords(text) {
 
 function parse(words) {
   const argCommands = ['fd', 'bk', 'rt', 'lt']
-  const nonArgCommands = ['pu', 'pd']
+  const nonArgCommands = ['pu', 'pd', 'ct', 'cs', 'ht', 'st']
   let index = -1
 
   return parseExpression(words)
