@@ -42,6 +42,8 @@ class Turtle {
   }
 
   fd(steps) {
+    if (!steps) return
+
     const radians = (this.direction / 180) * Math.PI
     const x = steps * 1 * Math.sin(radians)
     const y = steps * -1 * Math.cos(radians)
@@ -64,6 +66,8 @@ class Turtle {
   }
 
   rt(degrees) {
+    if (!degrees) return
+
     this.direction += degrees
     this.element.setAttribute(
       'transform',
