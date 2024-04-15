@@ -104,12 +104,3 @@ button {
 button:hover {
   background-color: #2563eb;
 }
-
-#error {
-  display: none;
-  background-color: #fca5a5;
-  color: #991b1b;
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  font-family: monospace;
-}
