@@ -1,90 +1,82 @@
-// Logo Part 2
-// Daniel Shiffman
-// https://thecodingtrain.com/CodingChallenges/121.2-logo-interpreter.html
-// https://youtu.be/i-k04yzfMpw
+function getWords(text) {
+  const temp = text.split(' ')
+  let words = []
 
-// Logo Part 2
-// Daniel Shiffman
-// https://thecodingtrain.com/CodingChallenges/121.2-logo-interpreter.html
-// https://youtu.be/i-k04yzfMpw
-
-class Command {
-  constructor(name, arg) {
-    this.name = name
-    this.arg = arg
-    this.commands = []
+  for (let t of temp) {
+    if (t.includes('[')) {
+      const count = t.split('[').length - 1
+      for (let i = 0; i < count; i++) {
+        words.push('[')
+      }
+      words.push(t.replaceAll('[', ''))
+    } else if (t.includes(']')) {
+      words.push(t.replaceAll(']', ''))
+      const count = t.split(']').length - 1
+      for (let i = 0; i < count; i++) {
+        words.push(']')
+      }
+    } else words.push(t)
   }
+
+  return words
 }
 
-class Parser {
-  constructor(text) {
-    this.text = text
-    this.index = 0
+function parse(words) {
+  const argCommands = ['fd', 'bk', 'rt', 'lt']
+  const nonArgCommands = ['pu', 'pd']
+  let index = -1
+
+  return parseExpression(words)
+
+  function remainingTokens() {
+    return index < words.length
   }
 
-  remainingTokens() {
-    return this.index < this.text.length
+  function getRepeat() {
+    nextToken()
+    nextToken()
+
+    let bracketsFound = 1
+    const nest = []
+
+    while (bracketsFound > 0) {
+      if (words[index] == '[') bracketsFound++
+      if (words[index] == ']') bracketsFound--
+
+      nest.push(words[index])
+      nextToken()
+    }
+    return nest
   }
 
-  getRepeat() {
-    while (this.text.charAt(this.index++) !== '[' && this.remainingTokens()) {}
-    let start = this.index
-
-    let bracketCount = 1
-    while (bracketCount > 0 && this.remainingTokens()) {
-      let char = this.text.charAt(this.index++)
-      if (char === '[') {
-        bracketCount++
-      } else if (char === ']') {
-        bracketCount--
-      }
-    }
-    let end = this.index
-    return this.text.substring(start, end - 1)
+  function nextToken() {
+    if (remainingTokens()) return words[++index]
   }
 
-  nextToken() {
-    let token = ''
-    let char = this.text.charAt(this.index)
-
-    // If it's a space ignore
-    if (char === ' ') {
-      this.index++
-      return this.nextToken()
-    }
-
-    // If it's a bracker send that back
-    if (char === '[' || char === ']') {
-      this.index++
-      return char
-    }
-
-    // Otherwise accumulate until a space
-    while (char !== ' ' && this.remainingTokens()) {
-      token += char
-      char = this.text.charAt(++this.index)
-    }
-    return token
-  }
-
-  parse() {
+  function parseExpression() {
     let commands = []
-    let movement = /^([fb]d|[lr]t)$/
-    let pen = /^p/
-    let repeat = /^repeat$/
-    while (this.remainingTokens()) {
-      let token = this.nextToken()
-      if (movement.test(token)) {
-        let cmd = new Command(token, this.nextToken())
+
+    while (remainingTokens()) {
+      let token = nextToken()
+
+      if (argCommands.includes(token)) {
+        let cmd = {
+          name: token,
+          arg: parseInt(nextToken()),
+        }
         commands.push(cmd)
-      } else if (pen.test(token)) {
-        let cmd = new Command(token)
+      } else if (nonArgCommands.includes(token)) {
+        let cmd = {
+          name: token,
+        }
         commands.push(cmd)
-      } else if (repeat.test(token)) {
-        let cmd = new Command(token, this.nextToken())
-        let toRepeat = this.getRepeat()
-        let parser = new Parser(toRepeat)
-        cmd.commands = parser.parse()
+      } else if (token == 'repeat') {
+        let cmd = {
+          name: token,
+          arg: parseInt(nextToken()),
+        }
+        let toRepeat = getRepeat()
+        cmd.commands = parse(toRepeat)
         commands.push(cmd)
       }
     }

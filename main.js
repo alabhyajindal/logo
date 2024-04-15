@@ -10,9 +10,9 @@ form.addEventListener('submit', (e) => {
   input.value = ''
 })
 
-function main(program) {
-  const parser = new Parser(program)
-  const tokens = parser.parse()
+function main(text) {
+  const words = getWords(text)
+  const tokens = parse(words)
   execute(tokens)
 }
 
@@ -30,5 +30,3 @@ function execute(tokens) {
     }
   }
 }
-
-main()
