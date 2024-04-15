@@ -10,22 +10,28 @@ form.addEventListener('submit', (e) => {
 })
 
 function main() {
-  // const code = 'fd 10 rt 90 fd 10'
-  const code = 'repeat 4 [fd 10 rt 90] fd 10'
+  const code = 'repeat 4 [fd 10 rt 90] rt 180 fd 10'
   // const code = 'repeat 36 [lt 10 pu fd 1 pd repeat 120 [fd 2 rt 3]]'
 
   turtle = new Turtle(200, 200, 0)
   turtle.init()
+  const parser = new Parser(code)
+  const commands = parser.parse()
+  execute(commands)
 }
 
-function execute(tokens) {
+async function execute(tokens) {
   for (let token of tokens) {
-    const { name, arg, commands } = token
-    if (name == 'repeat') {
-      console.log(name, arg, commands)
+    let { name, arg, commands } = token
+    arg = parseInt(arg)
 
+    if (name == 'repeat') {
       for (let i = 0; i < arg; i++) {
-        commands.forEach((c) => commandsMap[c.name](c.arg))
+        for (let command of commands) {
+          await new Promise((r) => setTimeout(r, 500))
+          console.log(commandsMap[command.name])
+          commandsMap[command.name](parseInt(command.arg))
+        }
       }
     } else {
       commandsMap[name](arg)

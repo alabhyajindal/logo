@@ -62,6 +62,7 @@ class Turtle {
   }
 
   rt(degrees) {
+    console.log(degrees)
     this.direction += degrees
     this.element.setAttribute(
       'transform',

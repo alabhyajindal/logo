@@ -1,34 +1,93 @@
-'use strict'
+// Logo Part 2
+// Daniel Shiffman
+// https://thecodingtrain.com/CodingChallenges/121.2-logo-interpreter.html
+// https://youtu.be/i-k04yzfMpw
 
-const dynamic = ['fd', 'bk', 'rt', 'lt', 'pc']
-const fixed = ['cs', 'ct', 'pd', 'pu']
+// Logo Part 2
+// Daniel Shiffman
+// https://thecodingtrain.com/CodingChallenges/121.2-logo-interpreter.html
+// https://youtu.be/i-k04yzfMpw
 
-// const foo = ['fd', 10, 'repeat', 4, '[', 'fd', 10, 'rt', 90, ']', 'fd', 10]
-const foo = ['fd', 10, 'rt', 90, 'fd', 10]
-
-// this function should be recursive. Parsing of the repeat function is the same as parsing the other strings so one function is sufficient - as long as we have a base case. And we can have that be constantly reducing the program array be unshifting as we add it to the results
-function parse(program) {
-  const result = []
-  for (let [i, word] of program.entries()) {
-    if (word == 'repeat') {
-      const startIndex = program.indexOf('[')
-      const endIndex = program.indexOf(']')
-      console.log(program.slice(startIndex + 1, endIndex))
-      result.push({ name: word, arg: program[i + 1], commands: [] })
-      console.log(program)
-      program = []
-      console.log(program)
-    } else if (dynamic.includes(word)) {
-      result.push({ name: word, arg: program[i + 1] })
-      console.log(program)
-      program.shift()
-      program.shift()
-      console.log(program)
-    }
+class Command {
+  constructor(name, arg) {
+    this.name = name
+    this.arg = arg
+    this.commands = []
   }
-  console.log(program)
-  if (program.length == 0) return result
-  return parse(program)
 }
 
-console.log(parse(foo))
+class Parser {
+  constructor(text) {
+    this.text = text
+    this.index = 0
+  }
+
+  remainingTokens() {
+    return this.index < this.text.length
+  }
+
+  getRepeat() {
+    while (this.text.charAt(this.index++) !== '[' && this.remainingTokens()) {}
+    let start = this.index
+
+    let bracketCount = 1
+    while (bracketCount > 0 && this.remainingTokens()) {
+      let char = this.text.charAt(this.index++)
+      if (char === '[') {
+        bracketCount++
+      } else if (char === ']') {
+        bracketCount--
+      }
+    }
+    let end = this.index
+    return this.text.substring(start, end - 1)
+  }
+
+  nextToken() {
+    let token = ''
+    let char = this.text.charAt(this.index)
+
+    // If it's a space ignore
+    if (char === ' ') {
+      this.index++
+      return this.nextToken()
+    }
+
+    // If it's a bracker send that back
+    if (char === '[' || char === ']') {
+      this.index++
+      return char
+    }
+
+    // Otherwise accumulate until a space
+    while (char !== ' ' && this.remainingTokens()) {
+      token += char
+      char = this.text.charAt(++this.index)
+    }
+    return token
+  }
+
+  parse() {
+    let commands = []
+    let movement = /^([fb]d|[lr]t)$/
+    let pen = /^p/
+    let repeat = /^repeat$/
+    while (this.remainingTokens()) {
+      let token = this.nextToken()
+      if (movement.test(token)) {
+        let cmd = new Command(token, this.nextToken())
+        commands.push(cmd)
+      } else if (pen.test(token)) {
+        let cmd = new Command(token)
+        commands.push(cmd)
+      } else if (repeat.test(token)) {
+        let cmd = new Command(token, this.nextToken())
+        let toRepeat = this.getRepeat()
+        let parser = new Parser(toRepeat)
+        cmd.commands = parser.parse()
+        commands.push(cmd)
+      }
+    }
+    return commands
+  }
+}
