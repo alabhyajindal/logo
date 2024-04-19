@@ -1,18 +1,5 @@
 const container = document.querySelector('svg')
 
-const commandsMap = {
-  fd: (steps) => turtle.fd(steps),
-  bk: (steps) => turtle.fd(-steps),
-  rt: (degree) => turtle.rt(degree),
-  lt: (degree) => turtle.rt(-degree),
-  pd: () => (turtle.pen = true),
-  pu: () => (turtle.pen = false),
-  ct: () => turtle.ct(),
-  cs: () => turtle.init(),
-  ht: () => turtle.ht(),
-  st: () => turtle.st(),
-}
-
 class Turtle {
   constructor(x, y, direction) {
     this.center = { x, y }
