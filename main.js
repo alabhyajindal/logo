@@ -1,7 +1,9 @@
 const input = document.querySelector('input')
 const form = document.querySelector('form')
 
-let turtle = new Turtle(200, 200, 0)
+const turtleCenter = window.innerWidth > 768 ? 200 : 150
+
+let turtle = new Turtle(turtleCenter, turtleCenter, 0)
 turtle.init()
 
 form.addEventListener('submit', (e) => {
