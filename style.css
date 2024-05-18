@@ -45,6 +45,14 @@ h1 {
   margin-bottom: 1em;
 }
 
+a {
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 .commands {
   margin-top: 1.5rem;
   display: flex;
