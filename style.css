@@ -41,6 +41,10 @@ h1 {
   font-size: 0.875rem;
 }
 
+.description p {
+  margin-bottom: 1em;
+}
+
 .commands {
   margin-top: 1.5rem;
   display: flex;
@@ -100,7 +104,7 @@ button:hover {
   background-color: #2563eb;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .app {
     flex-direction: row;
     align-items: flex-start;
