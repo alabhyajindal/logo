@@ -1,3 +1,3 @@
 # The Logo Programming Language
 
-![image](https://github.com/alabhyajindal/logo/assets/52493077/6f3ba9ef-b97b-4a2f-97ed-f8f72d131635)
+![image](https://github.com/user-attachments/assets/43161b9b-c0a9-4406-ac11-a2ebe1801098)
